@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Team Mann Island Finance - Breakout For Ben 2019</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <style>
+      html, body {
+        padding: 0;
+        margin: 0;
+        }
+      #map {
+       height: 500px;
+       width: 500px;
+       overflow: hidden;
+       float: left;
+       border: thin solid #333;
+       }
+    </style>
+  </head>
+  <body>
+  
+
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-sm" >
+      <h1 class="text-center">Team Mann Island Finance - Breakout For Ben 2019</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm" style="min-height: 500px">
+      
+      <div id="map"></div>
+    </div>
+    <div class="col-sm">  
+      <div class="row">
+    <div class="col-sm">
+      <h2>Progress to Goal</h2>
+      <div class="progress">
+        <div id="the-progress" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+          <div class="col-sm">
+            <h2>Stats</h2>
+            <p>
+              <strong>Time Remaining</strong>: Days <span id="days"></span>, 
+              Hours <span id="hours"></span>,
+              Minutes <span id="minutes"></span>,
+              Seconds <span id="seconds"></span>
+            </p>
+            <p>
+              <strong>Last updated:</strong>  <span id="last-update"></span> (UK Time)
+            </p>
+            <p>
+              <strong>Distance Traveled:</strong> <span id="distance-traveled"></span> Km (<span id="distance-traveled-mi"></span> mi)
+            </p>
+            <p>
+              <strong>Distance To Goal:</strong> <span id="distance-to-goal"></span> Km (<span id="distance-to-goal-mi"></span> mi)
+            </p>
+          </div>
+    </div>
+  </div>
+    </div>
+  </div>
+
+  
+
+</main><!-- /.container -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+
+    var startTime = "2019-10-17 10:00:00+00"; // UTC
+    var endtime = "2019-10-18 11:00:00+00"; // UTC
+
+    setInterval(function() {
+      var time = getTimeRemaining(endtime);
+      $("#days").text(time.days);
+      $("#hours").text(time.hours);
+      $("#minutes").text(time.minutes);
+      $("#seconds").text(time.seconds);
+    }, 1000);
+
+    var map;
+    var src = "https://geotrackermannisland.azurewebsites.net/api/KmlFileFunction?code=9ti5MRKCDFmaaIJZRSb71WY7pNxiut3fvvAEFIskgEclzhBa6d879w==" + "&rand=" + (Math.random() * 10000)
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(45.257753, -3.823688),
+        zoom: 4.6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      var kmlLayer = new google.maps.KmlLayer(src, {
+        suppressInfoWindows: true,
+        preserveViewport: true,
+        map: map
+      });
+    }
+
+    function getTimeRemaining(endtime){
+      var now = new Date();
+      var end = Date.parse(endtime);
+      var t = Date.parse(endtime) - Date.parse(now.toUTCString());
+      var seconds = Math.floor( (t/1000) % 60 );
+      var minutes = Math.floor( (t/1000/60) % 60 );
+      var hours = Math.floor( (t/(1000*60*60)) % 24 );
+      var days = Math.floor( t/(1000*60*60*24) );
+      return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      };
+    }
+
+    (function ($) {
+      var settings = {
+        "url": "https://geotrackermannisland.azurewebsites.net/api/StatsFunction?code=jxbAGrfU0ebL/KsfGir0abSY68rVTmPGfHLgauUzjeOfCim4SLdNOQ==",
+        "method": "GET",
+      }
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        var bar = $('#the-progress');
+        var progress = (response.DistanceTraveled / response.GoalDistance * 100).toFixed(2);
+
+        bar.width(progress+'%');
+        bar.text(progress+'%');
+        $('#last-update').text(response.LastPingUK);
+        var dt = Math.round(response.DistanceTraveled / 1000);
+        $('#distance-traveled').text(dt);
+        $('#distance-traveled-mi').text(Math.round(dt / 1.609));
+        var dtg = Math.round(response.DistanceToTarget / 1000);
+        $('#distance-to-goal').text(dtg);
+        $('#distance-to-goal-mi').text(Math.round(dtg/1.609));
+      });
+    })(jQuery);
+
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGuv-WeByhnW-sVC_hgYVSOktKmIHH7h0&callback=initMap">
+    </script>
+</body>
+</html>
