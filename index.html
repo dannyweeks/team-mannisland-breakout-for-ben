@@ -60,7 +60,7 @@
     <div class="col-sm">
       <h2>Progress to Goal</h2>
       <div class="progress">
-        <div id="the-progress" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+        <div id="the-progress" class="progress-bar" role="progressbar" style="width: 100%;">100%</div>
       </div>
     </div>
   </div>
@@ -70,19 +70,16 @@
           <div class="col-sm">
             <h2>Stats</h2>
             <p>
-              <strong>Time Remaining</strong>: Days <span id="days"></span>, 
-              Hours <span id="hours"></span>,
-              Minutes <span id="minutes"></span>,
-              Seconds <span id="seconds"></span>
+              <strong>Goal reached with time remaining</strong>: 0 Days, 
+              0 Hours ,
+              8 Minutes ,
+              0 Seconds
             </p>
             <p>
-              <strong>Last updated:</strong>  <span id="last-update"></span> (UK Time)
+              <strong>Distance Traveled:</strong> 1801 Km (1119 mi) as the crow flies
             </p>
             <p>
-              <strong>Distance Traveled:</strong> <span id="distance-traveled"></span> Km (<span id="distance-traveled-mi"></span> mi)
-            </p>
-            <p>
-              <strong>Distance To Goal:</strong> <span id="distance-to-goal"></span> Km (<span id="distance-to-goal-mi"></span> mi)
+              <strong>Distance To Goal:</strong> 0 Km ( 0 mi)
             </p>
           </div>
     </div>
@@ -110,7 +107,7 @@
     }, 1000);
 
     var map;
-    var src = "https://geotrackermannisland.azurewebsites.net/api/KmlFileFunction?code=9ti5MRKCDFmaaIJZRSb71WY7pNxiut3fvvAEFIskgEclzhBa6d879w==" + "&rand=" + (Math.random() * 10000)
+    var src = "./complete.kml"
 
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
@@ -142,30 +139,6 @@
         'seconds': seconds
       };
     }
-
-    (function ($) {
-      var settings = {
-        "url": "https://geotrackermannisland.azurewebsites.net/api/StatsFunction?code=jxbAGrfU0ebL/KsfGir0abSY68rVTmPGfHLgauUzjeOfCim4SLdNOQ==",
-        "method": "GET",
-      }
-
-      $.ajax(settings).done(function (response) {
-        console.log(response);
-        var bar = $('#the-progress');
-        var progress = (response.DistanceTraveled / response.GoalDistance * 100).toFixed(2);
-
-        bar.width(progress+'%');
-        bar.text(progress+'%');
-        $('#last-update').text(response.LastPingUK);
-        var dt = Math.round(response.DistanceTraveled / 1000);
-        $('#distance-traveled').text(dt);
-        $('#distance-traveled-mi').text(Math.round(dt / 1.609));
-        var dtg = Math.round(response.DistanceToTarget / 1000);
-        $('#distance-to-goal').text(dtg);
-        $('#distance-to-goal-mi').text(Math.round(dtg/1.609));
-      });
-    })(jQuery);
-
 
     </script>
     <script async defer
